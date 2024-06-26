@@ -5,6 +5,7 @@ import threading
 import traceback
 import socket
 import struct
+from typing import Any
 from queue import Queue
 
 import cv2
@@ -113,3 +114,64 @@ class ImageDisplayThread(threading.Thread):
     
     def stop(self):
         self._running = False
+
+
+def accept_connection(
+        server_socket: socket.socket, 
+        key: str, 
+        return_dict: dict[str, Any]):
+    """
+    클라이언트와 연결하는 함수
+
+    Args:
+        server_socket (socket.socket): 서버 소켓
+        key (str): 딕셔너리 키
+        return_dict (dict): 쓰레드 객체를 저장할 딕셔너리
+    """
+    # 클라이언트 연결
+    client_socket, addr = server_socket.accept()
+    print(f'Connected to a client {addr}. ({key})')
+
+    # Key에 맞는 객체 생성 후 딕셔너리에 저장
+    if 'Image' in key:
+        image_queue = Queue()
+        image_receiver_thread = ImageReceiverThread(client_socket, image_queue)
+        image_display_thread = ImageDisplayThread(image_queue)
+        return_dict[key] = (image_queue, image_receiver_thread, image_display_thread)
+    elif 'Message' in key:
+        return_dict[key] = MessageSender(client_socket)
+    else:
+        raise ValueError(f'Invalid key: {key}')
+
+
+def create_client_thread(
+        server_ip: str, 
+        ports: dict[str, int], 
+        return_dict: dict[str, Any]):
+    """
+    클라이언트와 통신하는 쓰레드 생성하는 함수
+
+    Args:
+        server_ip (str): 서버 IP 주소
+        ports (list): 포트와 키가 담긴 튜플들의 리스트
+        return_dict (dict): 쓰레드 객체를 저장할 딕셔너리
+    """
+    threads = []
+
+    for port, key in ports:
+        # 서버 소켓 생성
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        server_socket.bind((server_ip, port))
+
+        # 클라이언트 연결 대기
+        server_socket.listen()
+        print(f'Waiting for a client to connect on {server_ip}:{port}... ({key})')
+        thread = threading.Thread(target=accept_connection, 
+                                  args=(server_socket, key, return_dict))
+        thread.daemon = True
+        thread.start()
+        threads.append(thread)
+    
+    for thread in threads:
+        thread.join()
