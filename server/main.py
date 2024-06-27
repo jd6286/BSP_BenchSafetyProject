@@ -4,7 +4,7 @@
 from queue import Queue
 
 from utils.communication import MessageSender, init_communication
-from utils.inference import Inferencer
+from utils.inference import Inferencer, InferenceState
 from utils.thread import ImageReceiveThread
 
 
@@ -21,10 +21,18 @@ if __name__ == '__main__':
     # 쓰레드 시작
     client1_image_receiver.start()
 
+    # 추론 객체 생성
+    pose_class = ['pull', 'push', 'unknown']
+    inferencer = Inferencer()
+    state = InferenceState()
+
     # 무한 루프
     try:
         while True:
-            pass
+            if not client1_receive_queue.empty():
+                frame = client1_receive_queue.get()
+                inferencer.inference(frame, state)
+                print(pose_class[state.selected_index])
     except Exception as e:
         print(e)
     finally:
