@@ -3,6 +3,8 @@
 """
 from queue import Queue
 
+import cv2
+
 from utils.communication import MessageSender, init_communication
 from utils.inference import Inferencer, InferenceState
 from utils.thread import ImageReceiveThread
@@ -32,11 +34,19 @@ if __name__ == '__main__':
             if not client1_receive_queue.empty():
                 frame = client1_receive_queue.get()
                 inferencer.inference(frame, state)
-                print(pose_class[state.selected_index])
+                print(pose_class[state.selected_index], f'warning:{state.warning_active}')
+                if state.warning_active:
+                    client1_message_sender.send('buzzer on')
+                else:
+                    client1_message_sender.send('buzzer off')
+                cv2.imshow('frame', frame)
+                cv2.waitKey(1)
     except Exception as e:
         print(e)
     finally:
+        cv2.destroyAllWindows()
         client1_image_receiver.stop()
+        client1_message_sender.send('buzzer off')
+        client1_message_sender.send('exit')
 
-    client1_image_receiver.join()
-
+    # client1_image_receiver.join()
