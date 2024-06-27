@@ -12,7 +12,7 @@ import socket
 from typing import Any
 from queue import Queue
 
-from utils.thread import ImageReceiveThread, InferenceThread
+from utils.thread import ImageReceiveThread, ImageDisplayThread
 
 
 class MessageSender:
@@ -56,10 +56,9 @@ def accept_connection(
 
     # Key에 맞는 객체 생성 후 딕셔너리에 저장
     if 'Image' in key:
-        image_queue = Queue()
-        image_receive_thread = ImageReceiveThread(client_socket, image_queue)
-        inference_thread = InferenceThread(image_queue)
-        return_dict[key] = (image_receive_thread, inference_thread)
+        receive_queue = Queue()
+        image_receive_thread = ImageReceiveThread(client_socket, receive_queue)
+        return_dict[key] = (image_receive_thread, receive_queue)
     elif 'Message' in key:
         return_dict[key] = MessageSender(client_socket)
     else:
@@ -78,14 +77,10 @@ def init_communication(return_dict: dict):
     server_ip = '0.0.0.0'
     client1_image_port = int(config['client1']['img_port'])
     client1_message_port = int(config['client1']['msg_port'])
-    # client2_image_port = int(config['client2']['img_port'])
-    # client2_message_port = int(config['client2']['msg_port'])
     
     ports = [
         (client1_image_port, 'Client1 Image'), 
-        (client1_message_port, 'Client1 Message'), 
-        # (client2_image_port, 'Client2 Image'), 
-        # (client2_message_port, 'Client2 Message')
+        (client1_message_port, 'Client1 Message')
     ]
 
     # 통신 쓰레드 생성
@@ -107,14 +102,3 @@ def init_communication(return_dict: dict):
     
     for thread in temp_threads:
         thread.join()
-
-    # 쓰레드 실행
-    for key, threads in return_dict.items():
-        if 'Image' in key:
-            for thread in threads:
-                thread.daemon = True
-                thread.start()
-        elif 'Message' in key:
-            pass
-        else:
-            raise ValueError(f'Invalid key: {key}')

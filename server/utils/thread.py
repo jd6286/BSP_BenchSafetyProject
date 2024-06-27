@@ -61,71 +61,17 @@ class ImageReceiveThread(threading.Thread):
         self._running = False
 
 
-class InferenceThread(threading.Thread):
+class ImageDisplayThread(threading.Thread):
     """
-    자세 추론 쓰레드
+    이미지 출력 쓰레드
 
     Args:
         image_queue (Queue): 이미지가 저장된 큐
     """
-    pose_class = ['pull', 'push', 'unknown']
-    POSE_THRESHOLD = 0.7
-
     def __init__(self, image_queue: Queue):
         super().__init__()
         self._queue = image_queue
         self._running = True
-
-        self._person_detector = PersonDetector('models/person-detection-0202.xml')
-        self._pose_estimator = PoseEstimator('models/singlepose-thunder-tflite-float16.xml')
-        self._pose_classifier = PoseClassifier('models/pose-classification-03.xml')
-
-        self.last_pose = self.pose_class[2]
-    
-    def _crop_roi(self, frame, boxes, padding=0):
-        """
-        사람 영역만 크롭하는 함수
-
-        Args:
-            frame (np.ndarray): 원본 이미지
-            boxes (np.ndarray): Object Detection 결과
-            padding (int): 크롭 시 패딩 값
-        """
-        height, width, _ = frame.shape
-
-        x1, y1, x2, y2 = list(map(int, boxes[0]))
-        x1 = max(0, x1 - padding)
-        y1 = max(0, y1 - padding)
-        x2 = min(width, x2 + padding)
-        y2 = min(height, y2 + padding)
-
-        roi = frame[y1:y2, x1:x2]
-        
-        return roi
-    
-    def _do_inference(self, frame: np.ndarray):
-        """
-        추론 수행 함수
-        """
-        # Person Detection
-        boxes, _, _ = self._person_detector.predict(frame)
-        if len(boxes) == 0:
-            return frame
-            # return 'No Person Detected'
-        
-        # Pose Estimation
-        roi = self._crop_roi(frame, boxes)
-        skeleton_img = self._pose_estimator.predict(roi)
-
-        # Pose Classification
-        idx, conf = self._pose_classifier.predict(skeleton_img)
-        color = (0, 255, 0) if conf > self.POSE_THRESHOLD else (0, 0, 255)
-        if conf > self.POSE_THRESHOLD:
-            self.last_pose = self.pose_class[idx]
-        cv2.putText(frame, self.last_pose, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
-
-        return frame
-        # return self.last_pose
 
     def run(self):
         cv2.namedWindow('Frame', cv2.WINDOW_NORMAL)
@@ -134,8 +80,7 @@ class InferenceThread(threading.Thread):
             while self._running:
                 if not self._queue.empty():
                     frame = self._queue.get()
-                    image = self._do_inference(frame)
-                    cv2.imshow('Frame', image)
+                    cv2.imshow('Frame', frame)
         except Exception as e:
             traceback.print_exc()
             self._running = False
