@@ -28,6 +28,9 @@ if __name__ == '__main__':
     inferencer = Inferencer()
     state = InferenceState()
 
+    inferencer.on_set_warning = lambda: client1_message_sender.send('buzzer on')
+    inferencer.on_reset_warning = lambda: client1_message_sender.send('buzzer off')
+
     # 무한 루프
     try:
         while True:
@@ -35,10 +38,6 @@ if __name__ == '__main__':
                 frame = client1_receive_queue.get()
                 inferencer.inference(frame, state)
                 print(pose_class[state.selected_index], f'warning:{state.warning_active}')
-                if state.warning_active:
-                    client1_message_sender.send('buzzer on')
-                else:
-                    client1_message_sender.send('buzzer off')
                 cv2.imshow('frame', frame)
                 cv2.waitKey(1)
     except Exception as e:

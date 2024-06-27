@@ -60,7 +60,13 @@ class Inferencer:
     def __init__(self):
         self.person_detector = PersonDetector(PERSON_DETECTION_MODEL_PATH)
         self.pose_estimator = PoseEstimator(POSE_ESTIMATION_MODEL_PATH)
-        self.pose_classifier = PoseClassifier(POSE_CLASSIFICATION_MODEL_PATH)   
+        self.pose_classifier = PoseClassifier(POSE_CLASSIFICATION_MODEL_PATH)
+
+        self.on_set_warning = self._default_callback
+        self.on_reset_warning = self._default_callback
+    
+    def _default_callback(self):
+        pass
 
     def inference(self, frame: np.ndarray, state: InferenceState):
         """
@@ -83,7 +89,9 @@ class Inferencer:
 
         # 사람이 감지되지 않으면 변수 초기화
         else:
-            state.reset_state()
+            if state.warning_active:
+                self.on_reset_warning()
+            state.reset_state() 
 
     def _crop_roi(self, frame: np.ndarray, boxes: np.ndarray, padding: int = 0):
         """
@@ -165,5 +173,7 @@ class Inferencer:
         elapsed_time = time.time() - state.pull_start_time
         # pull_state_duration만큼의 시간동안 pull상태가 지속되는 경우
         if elapsed_time > PULL_STATE_DURATION:
+            if not state.warning_active:
+                self.on_set_warning()
             state.warning_active = True # warning 활성화
             state.pull_start_time = None
