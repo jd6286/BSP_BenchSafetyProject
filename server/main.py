@@ -3,8 +3,10 @@
 """
 from queue import Queue
 
+import cv2
+
 from utils.communication import MessageSender, init_communication
-from utils.inference import Inferencer
+from utils.inference import Inferencer, InferenceState
 from utils.thread import ImageReceiveThread
 
 
@@ -21,14 +23,29 @@ if __name__ == '__main__':
     # 쓰레드 시작
     client1_image_receiver.start()
 
+    # 추론 객체 생성
+    pose_class = ['pull', 'push', 'unknown']
+    inferencer = Inferencer()
+    state = InferenceState()
+
+    inferencer.on_set_warning = lambda: client1_message_sender.send('buzzer on')
+    inferencer.on_reset_warning = lambda: client1_message_sender.send('buzzer off')
+
     # 무한 루프
     try:
         while True:
-            pass
+            if not client1_receive_queue.empty():
+                frame = client1_receive_queue.get()
+                inferencer.inference(frame, state)
+                print(pose_class[state.selected_index], f'warning:{state.warning_active}')
+                cv2.imshow('frame', frame)
+                cv2.waitKey(1)
     except Exception as e:
         print(e)
     finally:
+        cv2.destroyAllWindows()
         client1_image_receiver.stop()
+        client1_message_sender.send('buzzer off')
+        client1_message_sender.send('exit')
 
-    client1_image_receiver.join()
-
+    # client1_image_receiver.join()
