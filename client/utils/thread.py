@@ -62,18 +62,10 @@ class MessageReceiveThread(threading.Thread):
         super().__init__()
         self._socket = message_socket           # 메시지 수신용 소켓
         self._running = True                    # 쓰레드 실행 여부
-        self._on_message_received = self._default_callback  # 메시지 수신 시 호출할 콜백 함수
+        self._callbacks = {}                    # 메시지에 따른 콜백 함수  
     
     def __del__(self):
         self._socket.close()
-    
-    @property
-    def on_message_received(self):
-        return self._on_message_received
-    
-    @on_message_received.setter
-    def on_message_received(self, callback):
-        self._on_message_received = callback
 
     def _default_callback(self, message: str):
         """
@@ -84,6 +76,16 @@ class MessageReceiveThread(threading.Thread):
         """
         print(f'Message from the server: {message}')
 
+    def add_callback(self, message: str, callback: callable):
+        """
+        메시지에 따른 콜백 함수 추가
+
+        Args:
+            message (str): 수신할 메시지
+            callback (callable): 콜백 함수
+        """
+        self._callbacks[message] = callback
+
     def run(self):
         try:
             while self._running:
@@ -93,7 +95,10 @@ class MessageReceiveThread(threading.Thread):
                     break
 
                 # 수신한 메시지를 콜백 함수에 전달
-                self._on_message_received(message)   
+                if message in self._callbacks:
+                    self._callbacks[message]()
+                else:
+                    self._default_callback(message)  
         except Exception as e:
             traceback.print_exc()
             self._running = False
