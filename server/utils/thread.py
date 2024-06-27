@@ -61,9 +61,9 @@ class ImageReceiveThread(threading.Thread):
         self._running = False
 
 
-class InferenceThread(threading.Thread):
+class ImageDisplayThread(threading.Thread):
     """
-    자세 추론 쓰레드
+    이미지 출력 쓰레드
 
     Args:
         image_queue (Queue): 이미지가 저장된 큐
@@ -74,15 +74,13 @@ class InferenceThread(threading.Thread):
         self._running = True
 
     def run(self):
-        cv2.namedWindow('Press ESC to exit', cv2.WINDOW_NORMAL)
+        cv2.namedWindow('Frame', cv2.WINDOW_NORMAL)
 
         try:
             while self._running:
                 if not self._queue.empty():
-                    img = self._queue.get()
-                    cv2.imshow('Press ESC to exit', img)
-                if cv2.waitKey(1) == 27:
-                    break
+                    frame = self._queue.get()
+                    cv2.imshow('Frame', frame)
         except Exception as e:
             traceback.print_exc()
             self._running = False
