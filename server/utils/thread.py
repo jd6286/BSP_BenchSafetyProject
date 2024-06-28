@@ -37,7 +37,7 @@ class ImageReceiveThread(threading.Thread):
             while self._running:
                 # 이미지 크기 수신
                 img_size_data = self._socket.recv(4)
-                if not img_size_data:
+                if not img_size_data or int.from_bytes(img_size_data, 'big') == 0:
                     break
                 img_size = struct.unpack(">L", img_size_data)[0]
 
