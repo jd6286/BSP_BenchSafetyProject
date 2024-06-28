@@ -2,6 +2,7 @@
 서버 메인 파일
 """
 import tkinter as tk
+import threading
 import traceback
 from queue import Queue
 
@@ -17,14 +18,11 @@ running = True
 popup_state = False
 
 
-def show_warning_popup(message):
+def _warning_popup_thread(message):
     """
-    경고 팝업 창 표시
+    경고 팝업 창 표시 쓰레드
     """
     global popup_state
-
-    if popup_state:
-        return
 
     def blink():
         current_color = root.cget("background")
@@ -41,10 +39,27 @@ def show_warning_popup(message):
 
     label = tk.Label(root, text=message, font=("Helvetica", 30))
     label.pack(expand=True)
-    popup_state = True
 
     blink()
     root.mainloop()
+
+    popup_state = False
+
+
+def show_warning_popup(message):
+    """
+    경고 팝업 창 표시
+    """
+    global popup_state
+
+    if popup_state:
+        return
+    
+    popup_state = True
+    popup_thread = threading.Thread(target=_warning_popup_thread, args=(message,))
+    popup_thread.daemon = True
+    popup_thread.start()
+
 
 def set_warning_handler():
     client1_message_sender.send('buzzer on')
