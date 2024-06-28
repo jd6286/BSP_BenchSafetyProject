@@ -1,0 +1,60 @@
+{
+    "type_of_model": "Classification",
+    "converter_type": "CLASSIFICATION",
+    "model_parameters": {
+        "labels": {
+            "label_tree": {
+                "type": "tree",
+                "directed": true,
+                "nodes": [
+                    "0",
+                    "1"
+                ],
+                "edges": []
+            },
+            "label_groups": [
+                {
+                    "_id": "667b725f374130b485170a07",
+                    "name": "labels",
+                    "label_ids": [
+                        "0",
+                        "1"
+                    ],
+                    "relation_type": "EXCLUSIVE"
+                }
+            ],
+            "all_labels": {
+                "0": {
+                    "_id": "0",
+                    "name": "pull",
+                    "color": {
+                        "red": 111,
+                        "green": 151,
+                        "blue": 202,
+                        "alpha": 255
+                    },
+                    "hotkey": "",
+                    "domain": "CLASSIFICATION",
+                    "creation_date": "2024-06-26T01:43:59.223000",
+                    "is_empty": false,
+                    "is_anomalous": false
+                },
+                "1": {
+                    "_id": "1",
+                    "name": "push",
+                    "color": {
+                        "red": 88,
+                        "green": 144,
+                        "blue": 95,
+                        "alpha": 255
+                    },
+                    "hotkey": "",
+                    "domain": "CLASSIFICATION",
+                    "creation_date": "2024-06-26T01:43:59.223000",
+                    "is_empty": false,
+                    "is_anomalous": false
+                }
+            }
+        }
+    }
+}
