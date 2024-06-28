@@ -68,8 +68,8 @@ def remote_start():
 
     # 클라이언트에게 시작 메시지 전송
     server_socket1.sendall('start'.encode('utf-8'))
-    server_socket2.sendall('start'.encode('utf-8'))
     server_socket1.close()
+    server_socket2.sendall('start'.encode('utf-8'))
     server_socket2.close()
 
 def accept_connection(

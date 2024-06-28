@@ -23,6 +23,11 @@ class ImageSendThread(threading.Thread):
             print('Error: Could not open webcam.')
     
     def __del__(self):
+        # 빈 바이트를 전송하여 이미지 전송을 종료
+        img_bytes = b''
+        img_size = len(img_bytes)
+        self._socket.sendall(struct.pack(">L", img_size) + img_bytes)
+
         self._socket.close()
         if self._camera is not None:
             self._camera.release()
@@ -33,7 +38,6 @@ class ImageSendThread(threading.Thread):
                 # 웹캠에서 이미지를 읽어옴
                 ret, frame = self._camera.read()
                 if not ret:
-                    print('Error: Could not read frame from webcam.')
                     break
 
                 # 이미지를 JPEG 포맷으로 인코딩 후 바이트로 변환
