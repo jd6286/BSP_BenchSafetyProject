@@ -1,3 +1,5 @@
+# object detection 실행 및 서버 통신
+
 import cv2
 import torch
 import threading
