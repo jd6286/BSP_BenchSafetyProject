@@ -1,6 +1,8 @@
 """
 서버 메인 파일
 """
+import tkinter as tk
+import threading
 import traceback
 from queue import Queue
 
@@ -13,6 +15,55 @@ from utils.thread import ImageReceiveThread, MessageReceiveThread
 
 # 프로세스 실행 여부
 running = True
+popup_state = False
+
+
+def _warning_popup_thread(message):
+    """
+    경고 팝업 창 표시 쓰레드
+    """
+    global popup_state
+
+    def blink():
+        current_color = root.cget("background")
+        next_color = "red" if current_color == "white" else "white"
+        root.configure(background=next_color)
+        root.after(500, blink)  # 500ms마다 색상 변경
+
+    root = tk.Tk()
+    root.withdraw()  # 메인 윈도우 숨기기
+    root.deiconify()  # 숨기기 취소
+    root.title("경고")
+    root.geometry("800x600")
+    root.configure(background="white")
+
+    label = tk.Label(root, text=message, font=("Helvetica", 30))
+    label.pack(expand=True)
+
+    blink()
+    root.mainloop()
+
+    popup_state = False
+
+
+def show_warning_popup(message):
+    """
+    경고 팝업 창 표시
+    """
+    global popup_state
+
+    if popup_state:
+        return
+    
+    popup_state = True
+    popup_thread = threading.Thread(target=_warning_popup_thread, args=(message,))
+    popup_thread.daemon = True
+    popup_thread.start()
+
+
+def set_warning_handler():
+    client1_message_sender.send('buzzer on')
+    show_warning_popup("Warning on Bench Press Zone!")
 
 
 def exit_process():
@@ -51,8 +102,11 @@ if __name__ == '__main__':
     inferencer = Inferencer()
     state = InferenceState()
 
-    inferencer.on_set_warning = lambda: client1_message_sender.send('buzzer on')
+    inferencer.on_set_warning = lambda: set_warning_handler()
     inferencer.on_reset_warning = lambda: client1_message_sender.send('buzzer off')
+    client2_message_receiver.add_callback(
+        "Warning on Bench Press Zone!", 
+        lambda: show_warning_popup("Warning on Bench Press Zone!"))
 
     # 무한 루프
     try:
