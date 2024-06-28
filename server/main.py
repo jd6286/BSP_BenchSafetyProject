@@ -5,13 +5,15 @@ from queue import Queue
 
 import cv2
 
-from utils.communication import MessageSender, init_communication
+from utils.communication import MessageSender, init_communication, remote_start
 from utils.inference import Inferencer, InferenceState
 from utils.thread import ImageReceiveThread
 
 
 if __name__ == '__main__':
     # 클라이언트와의 통신 초기화
+    remote_start()
+
     thread_dict = {}
     init_communication(thread_dict)
 
@@ -47,5 +49,3 @@ if __name__ == '__main__':
         client1_image_receiver.stop()
         client1_message_sender.send('buzzer off')
         client1_message_sender.send('exit')
-
-    # client1_image_receiver.join()

@@ -1,0 +1,9 @@
+[Unit]
+Description=Bench Safety Project remote start
+After=default.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/openvino-project/client/remote-start.py
+
+[Install]
+WantedBy=default.target
