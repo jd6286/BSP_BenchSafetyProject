@@ -15,6 +15,18 @@ from queue import Queue
 from utils.thread import ImageReceiveThread, ImageDisplayThread
 
 
+# 설정 가져오기
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+SERVER_IP = '0.0.0.0'
+
+CLIENT1_IP = config['client1']['ip']
+CLIENT1_REMOTE_PORT = int(config['client1']['remote_port'])
+CLIENT1_IMAGE_PORT = int(config['client1']['img_port'])
+CLIENT1_MESSAGE_PORT = int(config['client1']['msg_port'])
+
+
 class MessageSender:
     """
     클라이언트로 메시지를 전송하는 클래스
@@ -37,6 +49,15 @@ class MessageSender:
         """
         self._socket.sendall(message.encode('utf-8'))
 
+
+def remote_start():
+    """
+    클라이언트를 원격 실행하는 함수
+    """
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.connect((CLIENT1_IP, CLIENT1_REMOTE_PORT))
+    server_socket.sendall('start'.encode('utf-8'))
+    server_socket.close()
 
 def accept_connection(
         server_socket: socket.socket, 
@@ -68,19 +89,10 @@ def accept_connection(
 def init_communication(return_dict: dict):
     """
     통신 초기화 함수
-    """
-    # Config 파일 읽기
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-
-    # 연결 정보
-    server_ip = '0.0.0.0'
-    client1_image_port = int(config['client1']['img_port'])
-    client1_message_port = int(config['client1']['msg_port'])
-    
+    """   
     ports = [
-        (client1_image_port, 'Client1 Image'), 
-        (client1_message_port, 'Client1 Message')
+        (CLIENT1_IMAGE_PORT, 'Client1 Image'), 
+        (CLIENT1_MESSAGE_PORT, 'Client1 Message')
     ]
 
     # 통신 쓰레드 생성
@@ -89,11 +101,11 @@ def init_communication(return_dict: dict):
         # 서버 소켓 생성
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_socket.bind((server_ip, port))
+        server_socket.bind((SERVER_IP, port))
 
         # 클라이언트 연결 대기
         server_socket.listen()
-        print(f'Waiting for a client to connect on {server_ip}:{port}... ({key})')
+        print(f'Waiting for a client to connect on {SERVER_IP}:{port}... ({key})')
         thread = threading.Thread(target=accept_connection, 
                                   args=(server_socket, key, return_dict))
         thread.daemon = True
