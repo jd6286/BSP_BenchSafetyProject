@@ -10,8 +10,6 @@ from queue import Queue
 import cv2
 import numpy as np
 
-from utils.model import PersonDetector, PoseClassifier, PoseEstimator
-
 
 class ImageReceiveThread(threading.Thread):
     """

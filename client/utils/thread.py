@@ -23,6 +23,11 @@ class ImageSendThread(threading.Thread):
             print('Error: Could not open webcam.')
     
     def __del__(self):
+        # 빈 바이트를 전송하여 이미지 전송을 종료
+        img_bytes = b''
+        img_size = len(img_bytes)
+        self._socket.sendall(struct.pack(">L", img_size) + img_bytes)
+
         self._socket.close()
         if self._camera is not None:
             self._camera.release()
@@ -32,22 +37,16 @@ class ImageSendThread(threading.Thread):
             while self._running:
                 # 웹캠에서 이미지를 읽어옴
                 ret, frame = self._camera.read()
-
                 if not ret:
-                    print('Error: Could not read frame from webcam.')
-                    img_bytes = b''
-                    img_size = len(img_bytes)
-                else:
-                    # 이미지를 JPEG 포맷으로 인코딩 후 바이트로 변환
-                    _, img_encoded = cv2.imencode('.jpg', frame)
-                    img_bytes = img_encoded.tobytes()
-                    img_size = len(img_bytes)
+                    break
+
+                # 이미지를 JPEG 포맷으로 인코딩 후 바이트로 변환
+                _, img_encoded = cv2.imencode('.jpg', frame)
+                img_bytes = img_encoded.tobytes()
+                img_size = len(img_bytes)
 
                 # 이미지 크기를 네트워크 바이트 오더로 변환하여 전송
                 self._socket.sendall(struct.pack(">L", img_size) + img_bytes)
-
-                if not ret:
-                    break
         except Exception as e:
             traceback.print_exc()
             self._running = False
