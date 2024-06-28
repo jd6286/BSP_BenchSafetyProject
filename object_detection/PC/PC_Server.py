@@ -1,3 +1,5 @@
+## 라즈베리와의 서버 통신 / 라즈베리파이에서 데이터를 수신 받아 경고창을 띄움
+
 import socket
 import tkinter as tk
 
