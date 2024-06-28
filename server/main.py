@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     # 쓰레드 시작
     client1_image_receiver.start()
-    # client2_message_receiver.start()
+    client2_message_receiver.start()
 
     # 추론 객체 생성
     pose_class = ['pull', 'push', 'unknown']
@@ -61,7 +61,6 @@ if __name__ == '__main__':
             if not client1_receive_queue.empty():
                 frame = client1_receive_queue.get()
                 inferencer.inference(frame, state)
-                print(pose_class[state.selected_index], f'warning:{state.warning_active}')
                 cv2.imshow('frame', frame)
                 cv2.waitKey(1)
             if not client1_image_receiver.is_alive():
