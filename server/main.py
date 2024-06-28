@@ -7,7 +7,7 @@ import cv2
 
 from utils.communication import MessageSender, init_communication, remote_start
 from utils.inference import Inferencer, InferenceState
-from utils.thread import ImageReceiveThread
+from utils.thread import ImageReceiveThread, MessageReceiveThread
 
 
 if __name__ == '__main__':
@@ -21,9 +21,11 @@ if __name__ == '__main__':
     client1_image_receiver: ImageReceiveThread = thread_dict['Client1 Image'][0]
     client1_receive_queue: Queue = thread_dict['Client1 Image'][1]
     client1_message_sender: MessageSender = thread_dict['Client1 Message']
+    client2_message_receiver: MessageReceiveThread = thread_dict['Client2 Message']
 
     # 쓰레드 시작
     client1_image_receiver.start()
+    client2_message_receiver.start()
 
     # 추론 객체 생성
     pose_class = ['pull', 'push', 'unknown']
@@ -47,5 +49,6 @@ if __name__ == '__main__':
     finally:
         cv2.destroyAllWindows()
         client1_image_receiver.stop()
+        client2_message_receiver.stop()
         client1_message_sender.send('buzzer off')
         client1_message_sender.send('exit')
