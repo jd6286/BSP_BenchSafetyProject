@@ -109,22 +109,30 @@ def process_frames():
         # Perform inference on ROI
         results = model(roi_frame)
         
-        # Draw bounding boxes and labels on the ROI frame
-        results.render()
-        roi_frame_with_boxes = results.ims[0]
+        # Extract detections and apply confidence threshold
+        detections = results.xyxy[0]
+        high_conf_detections = [det for det in detections if det[4] > 0.8]
+        
+        # Check if any high-confidence objects are detected
+        if len(high_conf_detections) > 0:
+            # Object detected and not in cooldown
+            print("<Warning!>")
+            buzz(1)  # Buzz for 1 second
+            send_warning_to_server()  # Send message to server
+        
+        # Draw bounding boxes and labels on the ROI frame for high confidence detections
+        for det in high_conf_detections:
+            x1, y1, x2, y2, conf, cls = det
+            x1, y1, x2, y2 = map(int, [x1, y1, x2, y2])
+            label = f'{model.names[int(cls)]} {conf:.2f}'
+            cv2.rectangle(roi_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(roi_frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
         
         # Replace the ROI area in the original frame with the annotated ROI frame
-        frame[roi_y1:roi_y2, roi_x1:roi_x2] = roi_frame_with_boxes
+        frame[roi_y1:roi_y2, roi_x1:roi_x2] = roi_frame
         
         # Display the frame with detected objects
         cv2.imshow('Bench Press Warning System', frame)
-        
-        # Check if any objects are detected
-        if results.xyxy[0].shape[0] > 0 :
-            # Object detected and not in cooldown
-            print("<Warning!>")
-            buzz(1)  # Buzz for 1 seconds
-            send_warning_to_server() # send message to server
         
         # Check for 'q' key press to exit
         key = cv2.waitKey(1) & 0xFF
