@@ -12,7 +12,7 @@ import socket
 from typing import Any
 from queue import Queue
 
-from utils.thread import ImageReceiveThread, ImageDisplayThread
+from utils.thread import ImageReceiveThread, MessageReceiveThread
 
 
 # 설정 가져오기
@@ -25,6 +25,10 @@ CLIENT1_IP = config['client1']['ip']
 CLIENT1_REMOTE_PORT = int(config['client1']['remote_port'])
 CLIENT1_IMAGE_PORT = int(config['client1']['img_port'])
 CLIENT1_MESSAGE_PORT = int(config['client1']['msg_port'])
+
+CLIENT2_IP = config['client2']['ip']
+CLIENT2_REMOTE_PORT = int(config['client2']['remote_port'])
+CLIENT2_MESSAGE_PORT = int(config['client2']['msg_port'])
 
 
 class MessageSender:
@@ -54,10 +58,19 @@ def remote_start():
     """
     클라이언트를 원격 실행하는 함수
     """
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.connect((CLIENT1_IP, CLIENT1_REMOTE_PORT))
-    server_socket.sendall('start'.encode('utf-8'))
-    server_socket.close()
+    # 클라이언트1 연결
+    server_socket1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket1.connect((CLIENT1_IP, CLIENT1_REMOTE_PORT))
+
+    # 클라이언트2 연결
+    server_socket2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket2.connect((CLIENT2_IP, CLIENT2_REMOTE_PORT))
+
+    # 클라이언트에게 시작 메시지 전송
+    server_socket1.sendall('start'.encode('utf-8'))
+    server_socket2.sendall('start'.encode('utf-8'))
+    server_socket1.close()
+    server_socket2.close()
 
 def accept_connection(
         server_socket: socket.socket, 
@@ -76,12 +89,14 @@ def accept_connection(
     print(f'Connected to a client {addr}. ({key})')
 
     # Key에 맞는 객체 생성 후 딕셔너리에 저장
-    if 'Image' in key:
+    if key == 'Client1 Image':
         receive_queue = Queue()
         image_receive_thread = ImageReceiveThread(client_socket, receive_queue)
         return_dict[key] = (image_receive_thread, receive_queue)
-    elif 'Message' in key:
+    elif key == 'Client1 Message':
         return_dict[key] = MessageSender(client_socket)
+    elif key == 'Client2 Message':
+        return_dict[key] = MessageReceiveThread(client_socket)
     else:
         raise ValueError(f'Invalid key: {key}')
 
@@ -92,7 +107,8 @@ def init_communication(return_dict: dict):
     """   
     ports = [
         (CLIENT1_IMAGE_PORT, 'Client1 Image'), 
-        (CLIENT1_MESSAGE_PORT, 'Client1 Message')
+        (CLIENT1_MESSAGE_PORT, 'Client1 Message'),
+        (CLIENT2_MESSAGE_PORT, 'Client2 Message')
     ]
 
     # 통신 쓰레드 생성

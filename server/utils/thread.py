@@ -89,3 +89,33 @@ class ImageDisplayThread(threading.Thread):
     
     def stop(self):
         self._running = False
+
+
+class MessageReceiveThread(threading.Thread):
+    """
+    메시지 수신 쓰레드
+
+    Args:
+        client_socket (socket.socket): 클라이언트 소켓
+    """
+    def __init__(self, client_socket: socket.socket):
+        super().__init__()
+        self._socket = client_socket
+        self._running = True
+    
+    def __del__(self):
+        self._socket.close()
+    
+    def run(self):
+        try:
+            while self._running:
+                message = self._socket.recv(1024).decode('utf-8')
+                if not message:
+                    break
+                print(f'Message from client: {message}')
+        except Exception as e:
+            traceback.print_exc()
+            self._running = False
+    
+    def stop(self):
+        self._running = False
