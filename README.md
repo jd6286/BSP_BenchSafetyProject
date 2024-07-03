@@ -27,7 +27,7 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 ![Screenshot_from_2024-07-01_21-22-11](https://github.com/jd6286/SH2GH/assets/93331084/59e1ba79-a2e6-4ade-b7c9-9523e1c40fd0)
 
 긴급 상황 시나리오
-![Screenshot_from_2024-07-01_21-29-39](https://github.com/jd6286/SH2GH/assets/93331084/39203de5-1898-4d9a-9f6d-60308fa9c396)
+![Untitled](https://github.com/jd6286/SH2GH/assets/93331084/7f7affc3-2c7d-477a-893f-0739f0fbc32b)
 
 ## Class Diagram
 
