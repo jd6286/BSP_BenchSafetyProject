@@ -9,6 +9,9 @@
     - 위험 상황: 바벨을 더 이상 들지 못해 바벨에 깔린 상황
     - 긴급 상황: 바벨이 목 부근으로 떨어지는 긴급한 상황
 
+## Background
+https://www.youtube.com/watch?v=u2nGdxBQP50
+
 ## Clone code
 
 ```python
@@ -17,7 +20,7 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Prerequite
 - 서버
-z
+
 - 클라이언트
 
 ## High Level Design
