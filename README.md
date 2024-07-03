@@ -18,6 +18,14 @@
 ## Schedule
 ![Schedule](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/fa6e5cf9-5633-4e28-b9d5-9e3a1a007756)
 
+## Clone code
+
+```python
+https://github.com/jd6286/BSP_BenchSafetyProject.git
+```
+
+## Prerequite
+
 ## High Level Design
 
 ![High Level Design](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/f79c1b35-90e7-4949-9c33-03330ab1d604)
