@@ -10,12 +10,10 @@
 
 ## Purpose
 
-벤치프레스 도중 바벨의 무게를 이기지 못하고 깔리는 상황을 탐지하고 헬스장 직원에게 알림
-
-## Prerequite
-```python
-https://github.com/jd6286/BSP_BenchSafetyProject.git
-```
+- 벤치프레스 도중 발생하는 사고를 감지하고 알리는 시스템 개발
+- 두 가지 시나리오에 대한 구현 목표 설정
+    - 바벨을 더 이상 들지 못해 바벨에 깔린 상황 (위험 상황)
+    - 바벨이 목 부근으로 떨어지는 긴급한 상황 (긴급 상황)
 
 ## Schedule
 ![Schedule](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/4b0ceee0-fc65-4871-bf64-1fb938d5cab4)
