@@ -19,7 +19,7 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## High Level Design
 
-![High Level Design](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/f79c1b35-90e7-4949-9c33-03330ab1d604)
+![HLD](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/6c011187-e886-46d6-84cc-e8ff2a5c1dbf)
 
 ## Low Level Design
 
