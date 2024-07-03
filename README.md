@@ -23,7 +23,7 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Low Level Design
 
-###위험 상황 시나리오
+### 위험 상황 시나리오
 ![Warning LLD](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/546dc101-7e93-4bc3-a1dd-d6694bf32a20)
 
 긴급 상황 시나리오
