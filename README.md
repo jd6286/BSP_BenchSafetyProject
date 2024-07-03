@@ -4,7 +4,7 @@
 
 ## Team members
 
-1. 김정대
+1. 김정대(팀장)
 2. 권오준
 3. 이윤혁
 
@@ -16,7 +16,7 @@
     - 바벨이 목 부근으로 떨어지는 긴급한 상황 (긴급 상황)
 
 ## Schedule
-![Schedule](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/4b0ceee0-fc65-4871-bf64-1fb938d5cab4)
+![Schedule](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/fa6e5cf9-5633-4e28-b9d5-9e3a1a007756)
 
 ## High Level Design
 
