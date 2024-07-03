@@ -33,8 +33,9 @@
 ![gaogaiger-class-client](https://github.com/jd6286/SH2GH/assets/93331084/c51ac821-2646-414e-9a70-66381b6310f9)
 
 ## Prerequite
-
-- 추후 작성
+```python
+https://github.com/jd6286/BSP_BenchSafetyProject.git
+```
 
 ## Model Excute
 
