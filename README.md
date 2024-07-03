@@ -10,18 +10,13 @@
     - 긴급 상황: 바벨이 목 부근으로 떨어지는 긴급한 상황
 
 ## Background
-<iframe width="1093" height="615" src="https://www.youtube.com/embed/u2nGdxBQP50" title="인텔 4기 프로젝트 - Bench Safety Project 주제 선정 배경" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Video Label](http://img.youtube.com/vi/u2nGdxBQP50/sddefault.jpg)](https://youtu.be/u2nGdxBQP50)
 
 ## Clone code
 
 ```python
 https://github.com/jd6286/BSP_BenchSafetyProject.git
 ```
-
-## Prerequite
-- 서버
-
-- 클라이언트
 
 ## High Level Design
 
@@ -63,4 +58,4 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Result
 
-- 추후 작성
+[![Video Label](https://img.youtube.com/vi/KG8B4h4ZDTI/sddefault.jpg)](https://youtu.be/KG8B4h4ZDTI)
