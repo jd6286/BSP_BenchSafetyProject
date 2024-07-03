@@ -23,16 +23,16 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Low Level Design
 
-### 위험 상황 시나리오
+- 위험 상황 시퀀스 다이어그램
 ![Warning LLD](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/546dc101-7e93-4bc3-a1dd-d6694bf32a20)
 
-긴급 상황 시나리오
+- 긴급 상황 시퀀스 다이어그램
 ![Emergency LLD](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/9260f2d3-2fbb-4f2e-8787-dfe59cd644c9)
 
-서버 통신
+- 서버 통신
 ![Server Diagram](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/44d5f35e-9066-4633-8e0a-72282ba28f95)
 
-모델 활용
+- 모델 활용
 ![Model Use](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/2418f149-efac-4594-bdb1-530e534d84ce)
 
 ## Class Diagram
