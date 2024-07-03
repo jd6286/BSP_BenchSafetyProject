@@ -12,6 +12,11 @@
 
 벤치프레스 도중 바벨의 무게를 이기지 못하고 깔리는 상황을 탐지하고 헬스장 직원에게 알림
 
+## Prerequite
+```python
+https://github.com/jd6286/BSP_BenchSafetyProject.git
+```
+
 ## High Level Design
 
 ![Screenshot from 2024-07-03 09-38-24](https://github.com/jd6286/SH2GH/assets/93331084/4534069c-a424-4a5f-b96b-85fdb65d0e15)
@@ -31,11 +36,6 @@
 
 클라이언트 클래스 다이어그램
 ![gaogaiger-class-client](https://github.com/jd6286/SH2GH/assets/93331084/c51ac821-2646-414e-9a70-66381b6310f9)
-
-## Prerequite
-```python
-https://github.com/jd6286/BSP_BenchSafetyProject.git
-```
 
 ## Model Excute
 
