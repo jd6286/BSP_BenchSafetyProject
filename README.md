@@ -1,6 +1,6 @@
-# 목숨이 없지 가오가 없냐: 벤치프레스 사고 예방 프로젝트
+# BSP: Bench Safety Project
 
-목숨을 잃는 것보다 근손실이 더 두려운 헬창들을 위한 프로젝트
+벤치프레스 사고 알림 프로젝트
 
 ## Team members
 
@@ -14,11 +14,23 @@
 
 ## High Level Design
 
-- pose estimaion으로 사람의 동작을 감지
-- 바벨에 깔리는 동작을 정의하고, 이를 감지하는 로직 구현
-    - 바벨이 가슴 위에 일정 시간 이상 머무르는 경우를 감지
-- 특정 동작이 감지되면 헬스장 직원에게 알림을 보내는 시스템
-- 주변 사람들도 인지할 수 있도록 알림음 출력
+![Screenshot from 2024-07-03 09-38-24](https://github.com/jd6286/SH2GH/assets/93331084/4534069c-a424-4a5f-b96b-85fdb65d0e15)
+
+## Low Level Design
+
+위험 상황 시나리오
+![Screenshot_from_2024-07-01_21-22-11](https://github.com/jd6286/SH2GH/assets/93331084/59e1ba79-a2e6-4ade-b7c9-9523e1c40fd0)
+
+긴급 상황 시나리오
+![Screenshot_from_2024-07-01_21-29-39](https://github.com/jd6286/SH2GH/assets/93331084/39203de5-1898-4d9a-9f6d-60308fa9c396)
+
+## Class Diagram
+
+서버 클래스 다이어그램
+![gaogaiger-class-server](https://github.com/jd6286/SH2GH/assets/93331084/763b5e11-5ccb-40dd-9c95-6b9c59c1ffeb)
+
+클라이언트 클래스 다이어그램
+![gaogaiger-class-client](https://github.com/jd6286/SH2GH/assets/93331084/c51ac821-2646-414e-9a70-66381b6310f9)
 
 ## Prerequite
 
