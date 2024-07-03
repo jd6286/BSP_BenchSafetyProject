@@ -6,8 +6,8 @@
 
 - 벤치프레스 도중 발생하는 사고를 감지하고 알리는 시스템 개발
 - 두 가지 시나리오에 대한 구현 목표 설정
-    - 바벨을 더 이상 들지 못해 바벨에 깔린 상황 (위험 상황)
-    - 바벨이 목 부근으로 떨어지는 긴급한 상황 (긴급 상황)
+    - 위험 상황: 바벨을 더 이상 들지 못해 바벨에 깔린 상황
+    - 긴급 상황: 바벨이 목 부근으로 떨어지는 긴급한 상황
 
 ## Clone code
 
@@ -16,10 +16,13 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 ```
 
 ## Prerequite
+- 서버
+z
+- 클라이언트
 
 ## High Level Design
 
-![HLD](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/6c011187-e886-46d6-84cc-e8ff2a5c1dbf)
+![HighLevelDesign](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/f0a90acd-98a5-422c-b543-66106aa7e744)
 
 ## Low Level Design
 
@@ -37,10 +40,10 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Class Diagram
 
-서버 클래스 다이어그램
+- 서버 클래스 다이어그램
 ![gaogaiger-class-server](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/19f9e6f3-2faa-465f-a214-4dddeffac271)
 
-클라이언트 클래스 다이어그램
+- 클라이언트 클래스 다이어그램
 
 ![gaogaiger-class-client](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/ff78931c-239e-4efe-9967-d92ecc126221)
 
@@ -49,10 +52,10 @@ https://github.com/jd6286/BSP_BenchSafetyProject.git
 
 ## Model Excute
 
-위험 상황
+- 위험 상황
 ![Warning Output](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/97760a27-4b69-4107-97ad-025175ac3f9c)
 
-긴급 상황
+- 긴급 상황
 ![Emergency Output](https://github.com/jd6286/BSP_BenchSafetyProject/assets/93331084/ab06ec18-90eb-4520-b956-135ee58b5af4)
 
 ## Result
