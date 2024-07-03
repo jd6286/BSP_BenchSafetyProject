@@ -10,7 +10,7 @@
     - 긴급 상황: 바벨이 목 부근으로 떨어지는 긴급한 상황
 
 ## Background
-https://www.youtube.com/watch?v=u2nGdxBQP50
+<iframe width="1093" height="615" src="https://www.youtube.com/embed/u2nGdxBQP50" title="인텔 4기 프로젝트 - Bench Safety Project 주제 선정 배경" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Clone code
 
